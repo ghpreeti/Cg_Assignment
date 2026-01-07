@@ -4,6 +4,7 @@
   <Project Path="../Counter/CounterTask.csproj" Id="fdbaa795-02b6-46b0-9e62-754dc823f8e9" />
   <Project Path="../LibraryManagementSystem/LibraryManagementSystem.csproj" Id="4bf10c94-aff4-426e-ab82-0f34b14f286e" />
   <Project Path="../MovieLibrary/MovieLibrary.csproj" Id="81b9f61c-5bc7-4b6e-a346-a31b91047bd5" />
+  <Project Path="../ProductInventory/ProductInventory.csproj" Id="4edf7d48-6316-4d79-ae81-4dbc70e37e76" />
   <Project Path="../RealEstateListingManagement/RealEstateListingManagement.csproj" Id="9fc4017f-af9a-4aee-822b-e9a3246314bb" />
   <Project Path="../Subscription/Subscription.csproj" Id="4fe352b8-6927-4b4a-907b-f0ea92993a2b" />
   <Project Path="AdvTaskAssignment1.csproj" />
