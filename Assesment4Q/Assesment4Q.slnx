@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../ASCII_to_String/ASCII_to_String.csproj" Id="1d0977a2-269c-44ea-8d5f-2338d5fdda97" />
+  <Project Path="../BankingNUnitTest/BankingNUnitTest.csproj" Id="c1a1b766-0702-4066-8a26-d45190753d16" />
+  <Project Path="../StreamBuzz/StreamBuzz.csproj" Id="6d2458ed-6df4-4914-a2c6-4f6223d62838" />
+  <Project Path="../StudentLINQ/StudentLINQ.csproj" Id="17a1cf62-e4cb-4d3f-a7af-6c3b033136ec" />
+  <Project Path="FactoryRobotHazardAnalyzer.csproj" />
+</Solution>
