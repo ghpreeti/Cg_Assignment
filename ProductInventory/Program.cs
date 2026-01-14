@@ -1,68 +1,81 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System;
+using System.Collections.Generic;
+using System.IO;
 using ProductInventory;
 
 class Program
 {
     public static void Main(string[] args)
     {
-        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+        var outputPath = Environment.GetEnvironmentVariable("OUTPUT_PATH");
+        TextWriter textWriter;
 
-        IInventory inventory = new Inventory(); 
-        int pCount = Convert.ToInt32(Console.ReadLine().Trim()); 
-        
-        for (int i = 1; i <= pCount; i++)
+        if (string.IsNullOrWhiteSpace(outputPath))
         {
-            var a = Console.ReadLine().Trim().Split(" "); 
-            Product e = new Product();
-            e.Name = a[0];
-            e.Category = a[1];
-            e.Stock = Convert.ToInt32(a[2]);
-            e.Price = Convert.ToInt32(a[3]); inventory.AddProduct(e);
+            textWriter = Console.Out;
+        }
+        else
+        {
+            textWriter = new StreamWriter(outputPath, append: true);
         }
 
-        var b = Console.ReadLine().Trim().Split(" "); 
-        var randomCategoryName = b[0];
-        var randomProductName = b[1];
-        string productName = b[2];
-
-        var getProductsByCategory = inventory.GetProductsByCategory(randomCategoryName); 
-        textWriter.WriteLine($"{randomCategoryName}:"); 
-
-        foreach (var product in getProductsByCategory.OrderBy(a => a.Name))
-        { textWriter.WriteLine($"Product Name:{product.Name} Category:{product.Category}"); }
-
-        var searchProductsByName = inventory.SearchProductsByName(randomProductName); 
-        textWriter.WriteLine($"{randomProductName}:"); 
-
-        foreach (var product in searchProductsByName.OrderBy(a => a.Name))
-        { textWriter.WriteLine($"Product Name:{product.Name} Category:{product.Category}"); }
-
-        textWriter.WriteLine("Total Value:$" + inventory.CalculateTotalValue());
-        var getProductsByCategoryWithCount = inventory.GetProductsByCategoryWithCount(); 
-        
-        foreach (var item in getProductsByCategoryWithCount.OrderBy(a => a.Item1))
+        try
         {
-            textWriter.WriteLine($"{item.Item1}:{item.Item2}");
-        }
+            IInventory inventory = new Inventory();
 
-        var getAllProductsByCategory = inventory.GetAllProductsByCategory(); 
-        foreach (var item in getAllProductsByCategory.OrderBy(a => a.Item1))
-        {
-            textWriter.WriteLine($"{item.Item1}:"); foreach (var item2 in item.Item2)
+            // Sample data for testing
+            List<Product> sampleProducts = new List<Product>
             {
-                textWriter.WriteLine($"Product Name:{item2.Name} Price:{item2.Price}");
+                new Product { Name = "Apple", Category = "Fruit", Stock = 10, Price = 2 },
+                new Product { Name = "Banana", Category = "Fruit", Stock = 5, Price = 1 },
+                new Product { Name = "Carrot", Category = "Vegetable", Stock = 8, Price = 3 },
+                new Product { Name = "Milk", Category = "Dairy", Stock = 2, Price = 4 }
+            };
+
+            foreach (var p in sampleProducts)
+            {
+                inventory.AddProduct(p);
+            }
+
+            string randomCategoryName = "Fruit";
+            string randomProductName = "Apple";
+            string productName = "Banana";
+
+            var getProductsByCategory = inventory.GetProductsByCategory(randomCategoryName);
+            textWriter.WriteLine($"{randomCategoryName}:");
+
+            foreach (var product in getProductsByCategory.OrderBy(p => p.Name))
+            {
+                textWriter.WriteLine($"Product Name:{product.Name} Category:{product.Category}");
+            }
+
+            var searchProductsByName = inventory.SearchProductsByName(randomProductName);
+            textWriter.WriteLine($"{randomProductName}:");
+
+            foreach (var product in searchProductsByName.OrderBy(p => p.Name))
+            {
+                textWriter.WriteLine($"Product Name:{product.Name} Category:{product.Category}");
+            }
+
+            textWriter.WriteLine("Total Value:$" + inventory.CalculateTotalValue());
+
+            var productsToDelete = inventory.SearchProductsByName(productName);
+            foreach (var product in productsToDelete)
+            {
+                inventory.RemoveProduct(product);
+            }
+            textWriter.WriteLine("New Total Value:$" + inventory.CalculateTotalValue());
+        }
+        finally
+        {
+            if (textWriter is StreamWriter sw)
+            {
+                sw.Flush();
+                sw.Close();
+                sw.Dispose();
             }
         }
-
-
-        var productsToDelete = inventory.SearchProductsByName(productName);
-        foreach (var product in productsToDelete)
-        {
-            inventory.RemoveProduct(product);
-        }
-        textWriter.WriteLine("New Total Value:$" + inventory.CalculateTotalValue()); 
-        textWriter.Flush(); 
-        textWriter.Close();
     }
 }
 

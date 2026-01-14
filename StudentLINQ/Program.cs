@@ -54,13 +54,15 @@ class Program
         List<Student> studList = sRepo.GetAllStudents();
 
         //1.
-        var stdbymarks = studList.Where(m => m.Marks >= 85 && m.Marks < 22).ToList();
+        Console.WriteLine("\n1.");
+        var stdbymarks = studList.Where(m => m.Marks >= 85 && m.Age < 22).ToList();
         foreach(var std in stdbymarks)
         {
             Console.WriteLine($"Id:{std.Id}, Name:{std.Name}, Age:{std.Age}, Marks:{std.Marks}, City:{std.City}");
         }
 
         //2.
+        Console.WriteLine("\n2.");
         var sorted = studList.OrderByDescending(s => s.Marks).ToList();
         foreach (var std in sorted)
         {
@@ -68,6 +70,7 @@ class Program
         }
 
         //3.
+        Console.WriteLine("\n3.");
         var anymSelect = studList.Select(s => new { s.Name, s.Marks }).ToList();
         foreach (var std in anymSelect)
         {
@@ -75,21 +78,56 @@ class Program
         }
 
         //4.
+        Console.WriteLine("\n4.");
         var topper = studList.Max(s=>s.Marks);
         Console.WriteLine(topper);
 
         //5.
-        var stdByCity = studList.GroupBy(c => c.City);
-        foreach (var group in stdByCity)
+        Console.WriteLine("\n5.");
+        string cityToSerach = Console.ReadLine();
+        var stdByCity = studList.FindAll(c => c.City == cityToSerach);
+        foreach (var std in stdByCity)
+        {
+            Console.WriteLine($"Name:{std.Name}, City:{std.City}");
+        }
+
+    }
+
+     public static void SlightlyTricky()
+    {
+        StudentRepo sObj = new StudentRepo();
+        List<Student> studList = sObj.GetAllStudents();
+
+        //1.
+        Console.WriteLine("\n1.");
+        Console.WriteLine("Average marks of all students");
+        var avg = studList.Average(m => m.Marks);
+        Console.WriteLine(avg);
+
+        //2.
+        Console.WriteLine("\n2.");
+        var cityGrp = studList.GroupBy(c => c.City);
+        foreach(var group in cityGrp)
         {
             Console.WriteLine($"City: {group.Key}");
-
-            foreach (var std in group)
+            foreach(var std in group)
             {
-                Console.WriteLine($"  Id:{std.Id}, Name:{std.Name}, Age:{std.Age}, Marks:{std.Marks}");
+                Console.WriteLine($"Name:{std.Name}");
             }
         }
 
+        //3.
+        Console.WriteLine("\n3.");
+        var topTwo = studList
+                     .OrderByDescending(s => s.Marks)
+                     .Take(2).ToList();
+
+
+        //4.
+        Console.WriteLine("\n4.");
+        var above18 = studList.All(s => s.Age > 18);
+        if(above18)
+        Console.WriteLine("All student are above 18");
 
 
 
@@ -97,6 +135,8 @@ class Program
 
     static void Main()
     {
-        
+        //Easy();
+        //Medium();
+        SlightlyTricky();
     }
 }

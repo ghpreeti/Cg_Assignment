@@ -1,6 +1,6 @@
 ﻿namespace ProductInventory
 {
-    internal interface IInventory
+    public interface IInventory
     {
         void AddProduct(IProduct product); 
         void RemoveProduct(IProduct product); 
@@ -9,6 +9,7 @@
         List<IProduct> SearchProductsByName(string name);
         List<(string, int)> GetProductsByCategoryWithCount();
         List<(string, List<IProduct>)> GetAllProductsByCategory();
+
 
     }
 }
