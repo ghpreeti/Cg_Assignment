@@ -4,9 +4,10 @@ using System.Text;
 
 namespace ProductInventory
 {
-    internal class Inventory : IInventory
+    public class Inventory : IInventory
     {
         private List<IProduct> _products = new List<IProduct>();
+
         public void AddProduct(IProduct product)
         {
             _products.Add(product);
@@ -25,7 +26,7 @@ namespace ProductInventory
             int total = 0;
             foreach (var p in _products)
             {
-                total += p.Price;
+                total += (p.Price * p.Stock);
             }
             return total;
         }
@@ -121,7 +122,12 @@ namespace ProductInventory
 
         }
 
-
+        public void display() {
+            foreach (var list in _products)
+            {
+                Console.WriteLine($"Name {list.Name} Category {list.Category} Price{list.Price} stock:{list.Stock}");
+            }
+        }
 
 
 

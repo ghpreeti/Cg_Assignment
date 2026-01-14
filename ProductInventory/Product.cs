@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ProductInventory
 {
-    internal class Product : IProduct
+    public class Product : IProduct
     {
         public string Name { get; set; }
         public string Category { get; set; }
