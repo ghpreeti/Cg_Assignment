@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../TechStore/TechStore.csproj" />
+  <Project Path="CustomException.csproj" />
+</Solution>
