@@ -71,7 +71,7 @@ public class DiscountedProduct<T> where T : IProduct
     {
         // TODO: Initialize with validation
         // Discount must be between 0 and 100
-        if(discountPercentage >= 0 || discountPercentage < 100)
+        if(discountPercentage >= 0 && discountPercentage < 100)
         {
             _product = product;
             _discountPercentage = discountPercentage;

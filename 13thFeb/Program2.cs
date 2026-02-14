@@ -32,19 +32,23 @@ public class EnrollmentSystem<TStudent, TCourse>
         // - Student not already enrolled
         // - Student semester >= course prerequisite (if any)
         // - Return success/failure with reason
-        if(course.MaxCapacity <= _enrollments.Values.Sum(s=>s.Count) && !_enrollments.Contains(student) && student.Semester >= 1)
-        {
-            if (!_enrollments.ContainsKey(course))
-            {
-                _enrollments[course] = new List<TStudent>();
-            }
-            _enrollments[course].Add(student);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        var students = _enrollments[course];
+
+    // capacity check
+    if (students.Count >= course.MaxCapacity)
+        return false;
+
+    // already enrolled
+    if (students.Contains(student))
+        return false;
+
+    // prerequisite check (if LabCourse)
+    if (course is LabCourse lab &&
+        student.Semester < lab.RequiredSemester)
+        return false;
+
+    students.Add(student);
+    return true;
     
     }
 
@@ -66,7 +70,7 @@ public class EnrollmentSystem<TStudent, TCourse>
     public IEnumerable<TCourse> GetStudentCourses(TStudent student)
     {
         // Return courses student is enrolled in
-        return _enrollments.Where(e=>e.Value.Contains(student)).Select(e=>e.key);
+        return _enrollments.Where(e=>e.Value.Contains(student)).Select(e=>e.Key);
     }
     
     // TODO: Calculate student workload
@@ -106,10 +110,10 @@ public class GradeBook<TStudent, TCourse>
     {
         // Grade must be between 0 and 100
         // Student must be enrolled in course
-        if(grade>=0 && grade <= 100 && _enrollments.ContainsKey(course) && _enrollments[course].Contains(student))
-        {
-            _grades[(student,course)] = grade;
-        }
+        if (grade < 0 || grade > 100)
+        throw new ArgumentException("Invalid grade");
+
+             _grades[(student, course)] = grade;
     }
     
 // TODO: Calculate GPA for student
@@ -117,14 +121,31 @@ public class GradeBook<TStudent, TCourse>
     {
         // Weighted by course credits
         // Return null if no grades
-        return _grades.Where(g=>g.Key.Item1.Equals(student)).Average(g=>g.Value);
+        var studentGrades = _grades
+        .Where(g => g.Key.Item1.Equals(student))
+        .ToList();
+
+        if (!studentGrades.Any())
+            return null;
+
+        return studentGrades.Average(g => g.Value);
     }
     
     // TODO: Find top student in course
     public (TStudent student, double grade)? GetTopStudent(TCourse course)
     {
         // Return student with highest grade
-        return _grades.Where(g=>g.Value.Item2.Eqwals(course)).OrderByDescending(g=>g.Value).FirstOrDefault().Key;
+        // return _grades.Where(g=>g.Key.Item2.Equals(course)).OrderByDescending(g=>g.Value).FirstOrDefault().Key;
+
+        var result = _grades
+        .Where(g => g.Key.Item2.Equals(course))
+        .OrderByDescending(g => g.Value)
+        .FirstOrDefault();
+
+        if (result.Equals(default(KeyValuePair<(TStudent, TCourse), double>)))
+            return null;
+
+        return (result.Key.Item1, result.Value);
     }
 }
 
