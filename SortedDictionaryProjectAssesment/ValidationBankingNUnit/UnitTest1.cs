@@ -1,11 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.TestHost;
+using NUnit.Framework;
 
 namespace ValidationBankingNUnit
 {
-    [TestClass]   // 1) Test attribute for class
+    [TestFixture]   // 1) Test attribute for class
     public class UnitTest
     {
-        [TestMethod]   // 2) Test attribute for method
+        [Test]   // 2) Test attribute for method
         public void Test_Deposit_ValidAmount()
         {
             // Arrange
@@ -16,20 +17,20 @@ namespace ValidationBankingNUnit
             decimal actual = account.Balance;
 
             // Assert
-            Assert.AreEqual(1500m, actual);
+            Assert.That(actual,Is.EqualTo(1500m));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Deposit_NegativeAmount()
         {
             // Arrange
             Program account = new Program(1000m);
 
             // Act + Assert
-            Assert.ThrowsException<Exception>(() => account.Deposit(-100m));
+            Assert.Throws<Exception>(() => account.Deposit(-100m));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Withdraw_ValidAmount()
         {
             // Arrange
@@ -40,17 +41,17 @@ namespace ValidationBankingNUnit
             decimal actual = account.Balance;
 
             // Assert
-            Assert.AreEqual(700m, actual);
+            Assert.That(actual,Is.EqualTo(700m));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Withdraw_InsufficientFunds()
         {
             // Arrange
             Program account = new Program(500m);
 
             // Act + Assert
-            Assert.ThrowsException<Exception>(() => account.Withdraw(1000m));
+            Assert.Throws<Exception>(() => account.Withdraw(1000m));
         }
     }
 }
