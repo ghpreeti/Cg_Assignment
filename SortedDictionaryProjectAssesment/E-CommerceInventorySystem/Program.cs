@@ -126,8 +126,14 @@ public class InventoryManager
         var electronic  = products.Where(c=>c.Category == Category.Electronics && c.Price > 500);
         foreach(var item in electronic)
         {
+            if(item.GetType()==typeof(ElectronicProduct))
+            {
+                ElectronicProduct tempObj;
+                tempObj=(ElectronicProduct)item;
+                tempObj.Price = item.Price*0.9;
+            }
             //item.Price = item.Price*0.9;
-            
+
             var discounted = new DiscountedProduct<T>(item, 10);
             Console.WriteLine(discounted);
         }
@@ -166,3 +172,11 @@ public class InventoryManager
 //    - Applying discounts
 //    - Calculating total value before/after discount
 //    - Handling a mixed collection of different product types
+
+class Program
+{
+    public void Main()
+    {
+        
+    }
+}
