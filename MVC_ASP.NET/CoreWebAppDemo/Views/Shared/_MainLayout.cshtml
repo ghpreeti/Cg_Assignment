@@ -1,0 +1,43 @@
+﻿@using CoreWebAppDemo.Models
+@inject CartService cartService
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <table border="1" width="100%">
+        <tr>
+            <td width="120px">
+                <img src="/images/logo.png" alt="Logo" width="100" height="100" />
+            </td>
+            <td>
+                <h2>Welcome to TestApp</h2>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div>
+                    <a asp-controller="Product" asp-action="Index1">Cosmetic</a><br />
+                    <a asp-controller="Product" asp-action="Index2">Electronic</a><br />
+                    <a asp-controller="Product" asp-action="Index3">Clothing</a><br />
+                    <a asp-controller="Cart" asp-action="Index">
+                        View Cart (@cartService.GetCartCount())
+                    </a>
+                </div>
+            </td>
+
+            <td>
+                <div>
+                    @RenderBody()
+                </div>
+            </td>
+        </tr>
+
+    </table>
+   
+</body>
+</html>

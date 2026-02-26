@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CoreWebAppDemo.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Your Cart</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table border="1" cellpadding="10" width="80%">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+
+                    <td>
+                        <img src="@item.Product.ImageUrl" width="80" />
+                    </td>
+
+                    <td>₹ @item.Product.Price</td>
+
+                    <td>@item.Quantity</td>
+
+                    <td>₹ @(item.Product.Price* item.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+
+    <h3>
+        Grand Total: ₹ @Model.Sum(x => x.Product.Price * x.Quantity)
+    </h3>
+}
+   
