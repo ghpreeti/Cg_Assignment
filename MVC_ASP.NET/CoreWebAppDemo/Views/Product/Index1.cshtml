@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CoreWebAppDemo.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h1>Products</h1>
+
+<div style="display:flex; flex-wrap:wrap; gap:20px;">
+
+    @foreach (var item in Model)
+    {
+        <div style="border:1px solid #ccc; padding:15px; width:220px; text-align:center;">
+
+            <img src="@item.ImageUrl" width="150" height="150" style="object-fit:cover;" />
+
+            <h4>@item.Name</h4>
+
+            <p><strong>₹ @item.Price</strong></p>
+
+            <a asp-controller="Product"
+               asp-action="AddToCart"
+               asp-route-id="@item.ProductId"
+               style="display:inline-block; padding:8px 12px; background-color:#007bff; color:white; text-decoration:none;">
+                Add To Cart
+            </a>
+        </div>
+    }
+
+</div>

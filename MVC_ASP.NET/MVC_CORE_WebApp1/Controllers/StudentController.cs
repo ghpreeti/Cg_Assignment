@@ -1,0 +1,111 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using MVC_CORE_WebApp1.Models;
+
+namespace MVC_CORE_WebApp1.Controllers
+{
+    public class StudentController : Controller
+    {
+        StudentRepo sRepo = new StudentRepo();
+        public StudentController()
+        {
+            sRepo = new StudentRepo();
+        }
+
+        [HttpGet]
+        public string[] GetAllCities()
+        {
+            return new string[] { "New York", "Los Angeles", "Chicago", "Houston", "Phoenix" };
+        }
+
+        // GET: StudentController
+        public ActionResult Index()
+        {
+            return View(sRepo.GetAllData());
+        }
+
+        // GET: StudentController/Details/5
+        public ActionResult Details(int id)
+        {
+            Student s = sRepo.GetDataById(id);
+            return View(s);
+        }
+
+        [Route("StudentInfo/")] //attribute based routing
+        public ActionResult Details1(int rollNo)
+        {
+            Student s = sRepo.GetDataById(rollNo);
+            return View(s);
+        }
+
+        public ActionResult StudentsDetailsByName(string name)
+        {
+            return View();
+        }
+
+        // GET: StudentController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: StudentController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Student s1)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                sRepo.AddData(s1);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: StudentController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: StudentController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: StudentController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: StudentController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
+}
