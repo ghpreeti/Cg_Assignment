@@ -15,13 +15,15 @@ namespace CoreWebAppDemo.Controllers
         }
 
         [Route("")]
-        [Route("Cosmetics")]
-        [Route("Product/BeautyProduct")]
+        [Route("Product/electronics")]
         public IActionResult Index1()
         {
             var products = _productRepo.GetAllProducts();
             return View(products);
         }
+
+        [Route("Cosmetics")]
+        [Route("Product/BeautyProduct")]
         public IActionResult AddToCart(int id)
         {
             var product = _productRepo.GetProductById(id);
@@ -33,6 +35,7 @@ namespace CoreWebAppDemo.Controllers
 
             return RedirectToAction("Index1");
         }
+
         //public IActionResult Index3()
         //{
         //    return View(productRepo.GetAllCosmeticProduct());
